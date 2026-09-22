@@ -269,7 +269,16 @@ body {
             })();
     </script>
 
-
+<script>
+  document.addEventListener('click', function() {
+    let m = document.querySelector('.song-audio-autoplay');
+    let hint = document.getElementById('music-hint');
+    if (m && m.paused) {
+      m.play();
+      if (hint) { hint.style.display = 'none'; }
+    }
+  }, { once: true });
+</script>
 </body>
 
 </html>
