@@ -84,7 +84,7 @@
             60% { transform: rotate(45deg) scale(1); }
         }
 
-        /* Само всплывающее окно письма с фото */
+        /* Само всплывающее окно письма с фото (изначально скрыто) */
         #modal-letter {
             display: none;
             position: fixed;
@@ -99,7 +99,7 @@
             padding: 25px;
             border-radius: 15px;
             max-width: 90%;
-            width: 320px;
+            width: 340px;
             text-align: center;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             font-family: sans-serif;
@@ -108,14 +108,14 @@
         }
         .letter-photos {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             margin-bottom: 15px;
             flex-wrap: wrap;
         }
         .letter-photos img {
-            width: 120px;
-            height: 120px;
+            width: 95px;
+            height: 95px;
             object-fit: cover;
             border-radius: 10px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
@@ -139,7 +139,7 @@
      style="position: fixed; z-index: 10001; top: 10px; right: 10px;"
      onclick="let m = document.querySelector('.song-audio-autoplay'); if (m.paused ) {m.play(); this.className = 'rotateImages';} else {m.pause(); this.className = ''}">
     <audio class="song-audio-autoplay" controls loop style="display: none;visibility: hidden">
-        <source src="./index_files/music2.mp3" type="audio/mp3" />
+        <source src="./index_files/music3.mp3" type="audio/mp3" />
     </audio>
     <style type="text/css">
         .rotateImages {
@@ -186,14 +186,15 @@
         </div>
     </div>
 
-    <!-- Модальное окно с письмом и фотками -->
-    <div id="modal-letter">
+    <!-- Модальное окно с письмом и фотками (строго скрыто по умолчанию) -->
+    <div id="modal-letter" style="display: none;">
         <div class="letter-content">
             <h3 style="color: #ff4d4d; margin-bottom: 15px;">Моей любимой Мусе</h3>
             <div class="letter-photos">
-                <!-- Замени photo1.jpg и photo2.jpg на названия своих фото из папки index_files -->
-                <img src="./index_files/photo1.jpg" alt="Photo">
-                <img src="./index_files/photo2.jpg" alt="Photo">
+                <!-- Твои 3 фотографии из папки index_files -->
+                <img src="./index_files/image1.jpg" alt="Photo 1">
+                <img src="./index_files/image2.jpg" alt="Photo 2">
+                <img src="./index_files/image3.jpg" alt="Photo 3">
             </div>
             <p style="font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 15px;">
                 Каждый момент, проведенный с тобой — это бесценное сокровище. Спасибо, что ты есть у меня! 💖
@@ -346,7 +347,7 @@
                     $("#code").show().typewriter();
                     $("#clock-box").fadeIn(500);
                     
-                    // Показываем сердечко-письмо после того, как текст начал печататься
+                    // Показываем сердечко-письмо после того, как дерево выросло и текст пошел
                     document.getElementById('love-letter-box').style.display = 'block';
 
                     while (true) {
