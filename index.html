@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -19,29 +19,124 @@
     <script type="text/javascript" src="./config.js"></script>
 	
     <style type="text/css">
-        <!--
         .STYLE1 {
             color: #666666
         }
-       
-}
 		#main {
-  zoom: 0.42;
-  -moz-transform: scale(0.42);
-  -moz-transform-origin: top center;
-}
-body {
-  overflow-x: hidden;
-}
+            zoom: 0.42;
+            -moz-transform: scale(0.42);
+            -moz-transform-origin: top center;
+        }
+        body {
+            overflow-x: hidden;
+        }
+
+        /* Стили для интерактивного конверта-сердечка */
+        #love-letter-box {
+            display: none;
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 999;
+        }
+        .heart-envelope {
+            width: 80px;
+            height: 80px;
+            background: #ff4d4d;
+            position: relative;
+            transform: rotate(45deg);
+            margin: 0 auto 20px auto;
+            cursor: pointer;
+            animation: heartbeat 1.2s infinite;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.6);
+        }
+        .heart-envelope:before,
+        .heart-envelope:after {
+            content: '';
+            width: 80px;
+            height: 80px;
+            background: #ff4d4d;
+            border-radius: 50%;
+            position: absolute;
+        }
+        .heart-envelope:before { top: -40px; left: 0; }
+        .heart-envelope:after { left: -40px; top: 0; }
+
+        .envelope-text {
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            z-index: 1000;
+            white-space: nowrap;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        @keyframes heartbeat {
+            0% { transform: rotate(45deg) scale(1); }
+            15% { transform: rotate(45deg) scale(1.15); }
+            30% { transform: rotate(45deg) scale(1); }
+            45% { transform: rotate(45deg) scale(1.1); }
+            60% { transform: rotate(45deg) scale(1); }
+        }
+
+        /* Само всплывающее окно письма с фото */
+        #modal-letter {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+        .letter-content {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            max-width: 90%;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            font-family: sans-serif;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        .letter-photos {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .letter-photos img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .close-letter {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 
 <body>
 
-   
-
 <img src="https://ajlovechina.github.io/loveBalloon/static/music.png"
-     style="position: fixed;z-index: 10001;top:10px;right:10px;"
+     style="position: fixed; z-index: 10001; top: 10px; right: 10px;"
      onclick="let m = document.querySelector('.song-audio-autoplay'); if (m.paused ) {m.play(); this.className = 'rotateImages';} else {m.pause(); this.className = ''}">
     <audio class="song-audio-autoplay" controls loop style="display: none;visibility: hidden">
         <source src="./index_files/music2.mp3" type="audio/mp3" />
@@ -53,31 +148,15 @@ body {
         }
 
         @-webkit-keyframes myRotate {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-
-            50% {
-                -webkit-transform: rotate(180deg);
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
+            0% { -webkit-transform: rotate(0deg); }
+            50% { -webkit-transform: rotate(180deg); }
+            100% { -webkit-transform: rotate(360deg); }
         }
 
         @keyframes myRotate {
-            0% {
-                -webkit-transform: rotate(0deg);
-            }
-
-            50% {
-                -webkit-transform: rotate(180deg);
-            }
-
-            100% {
-                -webkit-transform: rotate(360deg);
-            }
+            0% { -webkit-transform: rotate(0deg); }
+            50% { -webkit-transform: rotate(180deg); }
+            100% { -webkit-transform: rotate(360deg); }
         }
     </style>
 
@@ -98,7 +177,29 @@ body {
             </div>
             <canvas id="canvas" width="1100" height="680"></canvas>
         </div>
+    </div>
 
+    <!-- Интерактивное сердечко-конверт в конце -->
+    <div id="love-letter-box">
+        <div class="heart-envelope" onclick="openLetter()">
+            <div class="envelope-text">Письмо ❤️</div>
+        </div>
+    </div>
+
+    <!-- Модальное окно с письмом и фотками -->
+    <div id="modal-letter">
+        <div class="letter-content">
+            <h3 style="color: #ff4d4d; margin-bottom: 15px;">Моей любимой Мусе</h3>
+            <div class="letter-photos">
+                <!-- Замени photo1.jpg и photo2.jpg на названия своих фото из папки index_files -->
+                <img src="./index_files/photo1.jpg" alt="Photo">
+                <img src="./index_files/photo2.jpg" alt="Photo">
+            </div>
+            <p style="font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 15px;">
+                Каждый момент, проведенный с тобой — это бесценное сокровище. Спасибо, что ты есть у меня! 💖
+            </p>
+            <button class="close-letter" onclick="closeLetter()">Закрыть</button>
+        </div>
     </div>
 
     <script type="text/javascript">
@@ -223,7 +324,6 @@ body {
                     foot.draw();
                     tree.snapshot("p2", 500, 0, 610, 680);
 
-                    // 会有闪烁不得意这样做, (＞﹏＜)
                     canvas.parent().css("background", "url(" + tree.toDataURL('image/png') + ")");
                     canvas.css("background", "#ffe");
                     $await(Jscex.Async.sleep(300));
@@ -245,6 +345,10 @@ body {
 
                     $("#code").show().typewriter();
                     $("#clock-box").fadeIn(500);
+                    
+                    // Показываем сердечко-письмо после того, как текст начал печататься
+                    document.getElementById('love-letter-box').style.display = 'block';
+
                     while (true) {
                         timeElapse(together);
                         $await(Jscex.Async.sleep(1000));
@@ -252,10 +356,8 @@ body {
                 }));
 
                 var runAsync = eval(Jscex.compile("async", function () {
-                    $await(seedAnimate());
-                    $await(growAnimate());
-                    $await(flowAnimate());
-                    $await(moveAnimate());
+                    $await(seedAnimate());$await(growAnimate());
+                    $await(flowAnimate());$await(moveAnimate());
 
                     textAnimate().start();
 
@@ -266,16 +368,21 @@ body {
             })();
     </script>
 
-<script>
-  document.addEventListener('click', function() {
-    let m = document.querySelector('.song-audio-autoplay');
-    let hint = document.getElementById('music-hint');
-    if (m && m.paused) {
-      m.play();
-      if (hint) { hint.style.display = 'none'; }
-    }
-  }, { once: true });
-</script>
+    <script>
+      document.addEventListener('click', function() {
+        let m = document.querySelector('.song-audio-autoplay');
+        if (m && m.paused) {
+          m.play();
+        }
+      }, { once: true });
+
+      function openLetter() {
+        document.getElementById('modal-letter').style.display = 'flex';
+      }
+      function closeLetter() {
+        document.getElementById('modal-letter').style.display = 'none';
+      }
+    </script>
 </body>
 
 </html>
